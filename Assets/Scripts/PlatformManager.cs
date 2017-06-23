@@ -43,7 +43,7 @@ public class PlatformManager : MonoBehaviour {
 		block.transform.parent = this.transform;
 
 		if (Random.value < Config.ENEMY_SPAWN_PROBABILITY) {
-//			block.transform.Find ("Enemy").gameObject.SetActive (true);
+			block.transform.Find ("Enemy").gameObject.SetActive (true);
 		}
 	}
 }

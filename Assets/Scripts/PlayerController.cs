@@ -42,6 +42,12 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private GameOverEvent _gameOverEvent;
 
+	private Collider _playerCollider;
+
+
+	void Start() {
+		_playerCollider = GetComponent<Collider> ();
+	}
 	// Update is called once per frame
 	void Update () {
 		float input = Input.GetAxis(INPUT_AXIS);
@@ -63,11 +69,6 @@ public class PlayerController : MonoBehaviour {
 		} else if(_currentHeight < _maxHeight - Config.PLAYER_FALL_THRESHOLD) {
 			_gameOverEvent.Invoke ();
 			StartCoroutine (LoadGameOverScene());
-
-		}
-
-		if (transform.position.y <= 1.5f) {
-			_velocity.y = _bounceSpeed;
 		}
 	}
 
@@ -82,11 +83,15 @@ public class PlayerController : MonoBehaviour {
 			if (_velocity.y < 0f) {
 				_velocity.y = _bounceSpeed;
 			}
+		} else if(other.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+			other.gameObject.GetComponentInChildren<ParticleSystem> ().Play ();
+			other.gameObject.GetComponentInChildren<FadeObject> ().enabled = true;
+			_playerCollider.enabled = false;
 		}
 	}
 
 	IEnumerator LoadGameOverScene () {
-		yield return new WaitForSeconds (1);
+		yield return new WaitForSeconds (2);
 		SceneManager.LoadScene ("GameOver");
 		yield return null;
 	}
