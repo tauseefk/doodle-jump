@@ -37,11 +37,6 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private MaxHeightEvent _maxHeightEvent;
 
-	[System.Serializable]
-	public class GameOverEvent : UnityEvent {}
-	[SerializeField]
-	private GameOverEvent _gameOverEvent;
-
 	private Collider _playerCollider;
 
 
@@ -65,9 +60,8 @@ public class PlayerController : MonoBehaviour {
 		transform.position += _velocity * Time.deltaTime;
 		if (_currentHeight > _maxHeight) {
 			_maxHeight = Mathf.FloorToInt (transform.position.y);
-			_maxHeightEvent.Invoke (_maxHeight);
+			_maxHeightEvent.Invoke (transform.position.y);
 		} else if(_currentHeight < _maxHeight - Config.PLAYER_FALL_THRESHOLD) {
-			_gameOverEvent.Invoke ();
 			StartCoroutine (LoadGameOverScene());
 		}
 	}
