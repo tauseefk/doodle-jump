@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private GameObject _leftBoundary;
 
+	[SerializeField]
+	private GameObject _crossfadeCanvas;
+
 	private Vector3 _velocity;
 
 	private int _maxHeight = 0;
@@ -62,7 +65,7 @@ public class PlayerController : MonoBehaviour {
 			_maxHeight = Mathf.FloorToInt (transform.position.y);
 			_maxHeightEvent.Invoke (transform.position.y);
 		} else if(_currentHeight < _maxHeight - Config.PLAYER_FALL_THRESHOLD) {
-			StartCoroutine (LoadGameOverScene());
+			_crossfadeCanvas.SetActive (true);
 		}
 	}
 
@@ -82,11 +85,5 @@ public class PlayerController : MonoBehaviour {
 			other.gameObject.GetComponentInChildren<FadeObject> ().enabled = true;
 			_playerCollider.enabled = false;
 		}
-	}
-
-	IEnumerator LoadGameOverScene () {
-		yield return new WaitForSeconds (2);
-		SceneManager.LoadScene ("GameOver");
-		yield return null;
 	}
 }
